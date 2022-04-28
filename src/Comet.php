@@ -349,7 +349,7 @@ class Comet
 
                 // --- Proceed with other handlers
 
-                $response = self::_handle($request);
+                $response = self::_handle($request, $connection);
                 $connection->send($response);
 
             } catch(HttpNotFoundException $error) {
