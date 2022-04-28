@@ -7,6 +7,7 @@ use Comet\Factory\CometPsr17Factory;
 use Slim\Factory\AppFactory;
 use Slim\Factory\Psr17\Psr17FactoryProvider;
 use Slim\Exception\HttpNotFoundException;
+use Workerman\Connection\ConnectionInterface;
 use Workerman\Worker;
 use Workerman\Protocols\Http;
 use Workerman\Protocols\Http\Response;
@@ -209,8 +210,12 @@ class Comet
      * @param Request $request
      * @return Response
      */
-    private static function _handle(Request $request)
+    private static function _handle(Request $request, ConnectionInterface $connection)
     {
+
+        $request->setAttribute('REMOTE_ADDR', $connection?->getRemoteIp());
+        $request->setAttribute('REMOTE_PORT', $connection?->getRemotePort());
+
         /** @var  Comet\Response $response */
         $response = self::$app->handle($request);
 
